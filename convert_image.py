@@ -13,7 +13,7 @@ image = cv2.resize(cv2.cvtColor(np.array(Image.open(path)),cv2.COLOR_RGB2BGR),(2
 tmp = np.zeros_like(image)
 palcode = """pals={"""
 imgcode = """img={"""
-tic_code = "function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub(pals[y+1],i*2+1,i*2+2),16))end for x=1,241 do pix(x-1,y,tonumber(string.sub(img[y+1],x,x),16)))end end TIC=function()end"
+tic_code = "function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub(pals[y+1],i*2+1,i*2+2),16))end for x=1,241 do pix(x-1,y,tonumber(string.sub(img[y+1],x,x),16))end end TIC=function()end"
 colors = np.zeros((136,16,3))
 
 for i in range(image.shape[0]):
