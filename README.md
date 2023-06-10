@@ -20,3 +20,10 @@ or
 
 
 `$ python convert_image.py [image path]` -> `Image path?> ` and then Image path
+
+
+When executed, the files `converted.code.lua`, `converted.png`, and `converted.colors.png` will be generated.
+
+
+
+The `converted.code.lua` file can be pasted directly into the TIC-80's code editor for execution.
