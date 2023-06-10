@@ -15,13 +15,6 @@ In command line:
 
 
 
-or
-
-
-
-`$ python convert_image.py [image path]` -> `Image path?> ` and then Image path
-
-
 When executed, the files `converted.code.lua`, `converted.png`, and `converted.colors.png` will be generated.
 
 
