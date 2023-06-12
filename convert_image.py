@@ -3,11 +3,7 @@ import numpy as np
 import cv2
 from PIL import Image
 
-if sys.argv[1]:
-    print("using args")
-    path = sys.argv[1]
-else:
-    path = input("Image path?> ")
+path = input("Image path?> ")
 
 image = cv2.resize(cv2.cvtColor(np.array(Image.open(path)),cv2.COLOR_RGB2BGR),(240,136),interpolation=cv2.INTER_CUBIC)
 tmp = np.zeros_like(image)
