@@ -5,15 +5,16 @@ from PIL import Image
 from skvideo.io import vread
 
 
-IMWIDTH = 240 // 2 # 60
-IMHEIGH = 136 // 2 # 34
+IMWIDTH = 240 // 2 # 120
+IMHEIGH = 136 // 2 # 68
 
 palcode = """pals={{"""
 imgcode = """img={{"""
-tic_code = f"imgt=0 function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub(pals[imgt%#pals+1][y//{136//IMHEIGH}+1],i+1,i+1),16)*16)end for x=1,{IMWIDTH+1} do rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub(img[imgt%#img+1][y//{136//IMHEIGH}+1],x,x),16))end end TIC=function()imgt=time()//100 end"
+tic_code = f"imgt=0 function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub(pals[imgt%#pals+1][y//{136//IMHEIGH}+1],i+1,i+1),36)*7)end for x=1,{IMWIDTH+1} do rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub(img[imgt%#img+1][y//{136//IMHEIGH}+1],x,x),16))end end TIC=function()imgt=time()//100 end"
 
 path = input("Image path?> ")
 video = vread(path)
+deco = "|/-\\"
 
 print(f"This image has {video.shape[0]} frame(s).")
 for l,image in enumerate(video):
@@ -35,7 +36,7 @@ for l,image in enumerate(video):
         imgtmp = ""
         for j in center:    
             for k in reversed(j):
-                paltmp += format(k//16,'01x')
+                paltmp += np.base_repr(int(k//7.11111),36)
         for j in label.ravel():
             imgtmp += format(j,"1x")
         
@@ -46,7 +47,7 @@ for l,image in enumerate(video):
         colors[i,:K,:] = center
     palcode = palcode[:-1] + "},{"
     imgcode = imgcode[:-1] + "},{"
-    print(f'converting frame {l}...')
+    print(f'converting frame {l}...{deco[l%4]}')
 
 print('converted.')
 open("converted.code.lua","w").write(f"{palcode[:-2]}}}\n{imgcode[:-2]}}}\n{tic_code}")
