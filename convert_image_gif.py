@@ -6,8 +6,8 @@ from skvideo.io import vread
 
 
 
-IMWIDTH = 240 // 2 # 120
-IMHEIGH = 136 // 2 # 68
+IMWIDTH = int( 240 // 2 ) # 120
+IMHEIGH = int( 136 // 2 ) # 68
 
 OUT_FPS = 10 # output video framerate
 
@@ -18,6 +18,7 @@ imgcode = """img={{"""
 tic_code = f"imgt=0 function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub((pals[imgt%#pals+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],i+1,i+1),36)*7)end for x=1,{IMWIDTH+1} do if y%{136//IMHEIGH} == 0 then rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub((img[imgt%#img+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],x,x),16))end end end TIC=function()imgt=time()//{1000//OUT_FPS} end"
 
 path = input("Image path?> ")
+print(f"\nLoading image...")
 video = vread(path)
 deco = "|/-\\"
 
@@ -72,9 +73,9 @@ for l,image in enumerate(video):
         colors[i,:K,:] = center
     palcode = palcode[:-1] + "},{"
     imgcode = imgcode[:-1] + "},{"
-    print(f'converting frame {l}...{deco[l%4]}')
+    print(f'converting frame {l+1}/{video.shape[0]}...{deco[l%4]}',end="\r")
 
-print('converted.')
+print('\nconverted.')
 open("converted.code.lua","w").write(f"{palcode[:-2]}}}\n{imgcode[:-2]}}}\n{tic_code}")
 cv2.imwrite("converted.png",tmp)
 cv2.imwrite("converted.colors.png",colors)
