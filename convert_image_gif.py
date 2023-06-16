@@ -5,22 +5,47 @@ from PIL import Image
 from skvideo.io import vread
 
 
+
 IMWIDTH = 240 // 2 # 120
 IMHEIGH = 136 // 2 # 68
 
+OUT_FPS = 10 # output video framerate
+
+K = 16
+
 palcode = """pals={{"""
 imgcode = """img={{"""
-tic_code = f"imgt=0 function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub(pals[imgt%#pals+1][y//{136//IMHEIGH}+1],i+1,i+1),36)*7)end for x=1,{IMWIDTH+1} do rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub(img[imgt%#img+1][y//{136//IMHEIGH}+1],x,x),16))end end TIC=function()imgt=time()//100 end"
+tic_code = f"imgt=0 function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub((pals[imgt%#pals+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],i+1,i+1),36)*7)end for x=1,{IMWIDTH+1} do if y%{136//IMHEIGH} == 0 then rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub((img[imgt%#img+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],x,x),16))end end end TIC=function()imgt=time()//{1000//OUT_FPS} end"
 
 path = input("Image path?> ")
 video = vread(path)
 deco = "|/-\\"
 
 print(f"This image has {video.shape[0]} frame(s).")
+
+RES_AUTO = False #Undeveloped
+
+if RES_AUTO:
+    est_list = []
+    for w in range(16,32,2):
+        for h in range(16,32,2):
+            estimated = int((240//w+48)*(136//h)*video.shape[0]*1.027571851190771)
+            if estimated > 524288:
+                print(f"\033[31;1m{240//w}x{136//h}({w}x{h})\033[0m",estimated)
+            elif estimated > 65536:
+                print(f"\033[33;1m{240//w}x{136//h}({w}x{h})\033[0m",estimated)
+                est_list.append([estimated,w,h])
+            else:
+                print(f"\033[32;1m{240//w}x{136//h}({w}x{h})\033[0m",estimated)
+    #maxv = est_list.index(np.max(np.array(est_list),0))
+    #print(est_list[maxv])
+    np.clip(est_list,0,524289)
+    
+
 for l,image in enumerate(video):
     image = cv2.resize(cv2.cvtColor(image,cv2.COLOR_RGB2BGR),(IMWIDTH,IMHEIGH),interpolation=cv2.INTER_LINEAR_EXACT)
     tmp = np.zeros_like(image)
-    K = 16
+    
     colors = np.zeros((IMHEIGH,K,3))
 
     for i in range(image.shape[0]):
