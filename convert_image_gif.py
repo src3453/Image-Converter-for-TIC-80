@@ -6,10 +6,12 @@ from skvideo.io import vread
 
 
 
-IMWIDTH = int( 240 // 2 ) # 120
-IMHEIGH = int( 136 // 2 ) # 68
+IMWIDTH = int( 240 // 4 ) # 120
+IMHEIGH = int( 136 // 5 ) # 68
 
-OUT_FPS = 10 # output video framerate
+OUT_FPS = 10 # output video framerate (-1 to auto framerate)
+
+FRAME_DECIMATION = 1 # Decimation rate of video frames (Default: 1 (No decimation)) 
 
 K = 16
 
@@ -22,7 +24,7 @@ print(f"\nLoading image...")
 video = vread(path)
 deco = "|/-\\"
 
-print(f"This image has {video.shape[0]} frame(s).")
+print(f"This image has {video.shape[0]} frame(s). (Decimated to {video.shape[0]//FRAME_DECIMATION} frame(s))")
 
 RES_AUTO = False #Undeveloped
 
@@ -43,7 +45,7 @@ if RES_AUTO:
     np.clip(est_list,0,524289)
     
 
-for l,image in enumerate(video):
+for l,image in enumerate(video[::FRAME_DECIMATION]):
     image = cv2.resize(cv2.cvtColor(image,cv2.COLOR_RGB2BGR),(IMWIDTH,IMHEIGH),interpolation=cv2.INTER_LINEAR_EXACT)
     tmp = np.zeros_like(image)
     
@@ -73,7 +75,7 @@ for l,image in enumerate(video):
         colors[i,:K,:] = center
     palcode = palcode[:-1] + "},{"
     imgcode = imgcode[:-1] + "},{"
-    print(f'converting frame {l+1}/{video.shape[0]}...{deco[l%4]}',end="\r")
+    print(f'converting frame {l+1}/{video.shape[0]//FRAME_DECIMATION}...{deco[l%4]}',end="\r")
 
 print('\nconverted.')
 open("converted.code.lua","w").write(f"{palcode[:-2]}}}\n{imgcode[:-2]}}}\n{tic_code}")
