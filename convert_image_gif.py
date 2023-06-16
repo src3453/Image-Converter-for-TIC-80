@@ -6,8 +6,8 @@ from skvideo.io import vread
 
 
 
-IMWIDTH = int( 240 // 4 ) # 120
-IMHEIGH = int( 136 // 5 ) # 68
+IMWIDTH = int( 240 // 2 ) # Output image width
+IMHEIGH = int( 136 // 2 ) # Output image height
 
 OUT_FPS = 10 # output video framerate (-1 to auto framerate)
 
