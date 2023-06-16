@@ -63,7 +63,7 @@ for l,image in enumerate(video):
         for j in center:    
             for k in reversed(j):
                 paltmp += np.base_repr(int(k//7.11111),36)
-        for j in label.ravel():
+        for j in label.flatten():
             imgtmp += format(j,"1x")
         
         palcode += f"\"{paltmp}\","
