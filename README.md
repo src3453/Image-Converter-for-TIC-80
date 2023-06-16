@@ -20,3 +20,13 @@ When executed, the files `converted.code.lua`, `converted.png`, and `converted.c
 
 
 The `converted.code.lua` file can be pasted directly into the TIC-80's code editor for execution.
+
+
+
+## Bonus Tools
+
+
+
+- `convert_image_rle.py`: Version that supports RLE compression.
+- `convert_image_31c.py`: A version that can use 31 colors per line by switching VRAM banks.
+- `convert_image_gif.py`: A version that supports GIF images and various videos. *Note: the code size usually larger than normal.*
