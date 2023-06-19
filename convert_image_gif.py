@@ -9,7 +9,7 @@ from skvideo.io import vread
 IMWIDTH = int( 240 // 2 ) # Output image width
 IMHEIGH = int( 136 // 2 ) # Output image height
 
-OUT_FPS = 10 # output video framerate (-1 to auto framerate)
+OUT_FPS = 10 # output video framerate (-1 to auto framerate) TODO imprement auto framerate feature
 
 FRAME_DECIMATION = 1 # Decimation rate of video frames (Default: 1 (No decimation)) 
 
