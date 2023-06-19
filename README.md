@@ -3,7 +3,7 @@ An image converter that supports **hi color**.
 ## Sample
 ![image](https://github.com/src3453/Image-Converter-for-TIC-80/assets/103661526/cb19a633-d878-4d0b-a2fe-dad027dc8fc4)
 ## Usage
-This tool requires `opencv-python`, `numpy`, `PIL`. (Also you need `scikit-video` to run `convert_image_gif.py`.)
+This tool requires `opencv-python`, `numpy`, `PIL`. (Also it requires `scikit-video` to run `convert_image_gif.py`.)
 
 
 
