@@ -11,7 +11,7 @@ In command line:
 
 
 
-Type $ python convert_image.py to see the Image path?>. Then, enter the path to the image there. Once entered, press Enter to execute.
+Type `$ python convert_image.py` to see the `Image path?>`. Then, enter the path to the image there. Once entered, press Enter to execute.
 
 
 
