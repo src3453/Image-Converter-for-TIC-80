@@ -13,11 +13,11 @@ OUT_FPS = 10 # output video framerate (-1 to auto framerate)
 
 FRAME_DECIMATION = 1 # Decimation rate of video frames (Default: 1 (No decimation)) 
 
-K = 16
+K = min( 16 ,IMWIDTH)
 
 palcode = """pals={{"""
 imgcode = """img={{"""
-tic_code = f"imgt=0 function SCN(y)for i=0,47 do poke(i+0x3fc0,tonumber(string.sub((pals[imgt%#pals+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],i+1,i+1),36)*7)end for x=1,{IMWIDTH+1} do if y%{136//IMHEIGH} == 0 then rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub((img[imgt%#img+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],x,x),16))end end end TIC=function()imgt=time()//{1000//OUT_FPS} end"
+tic_code = f"imgt=0 function SCN(y)for i=0,{K*3-1} do poke(i+0x3fc0,tonumber(string.sub((pals[imgt%#pals+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],i+1,i+1),36)*7)end for x=1,{IMWIDTH+1} do if y%{136//IMHEIGH} == 0 then rect((x-1)*{240//IMWIDTH},y,{240//IMWIDTH},{136//IMHEIGH},tonumber(string.sub((img[imgt%#img+1][y//{136//IMHEIGH}+1])or pals[imgt%#pals+1][1],x,x),16))end end end TIC=function()imgt=time()//{1000//OUT_FPS} end"
 
 path = input("Image path?> ")
 print(f"\nLoading image...")
@@ -79,5 +79,5 @@ for l,image in enumerate(video[::FRAME_DECIMATION]):
 
 print('\nconverted.')
 open("converted.code.lua","w").write(f"{palcode[:-2]}}}\n{imgcode[:-2]}}}\n{tic_code}")
-cv2.imwrite("converted.png",tmp)
-cv2.imwrite("converted.colors.png",colors)
+#cv2.imwrite("converted.png",tmp)
+#cv2.imwrite("converted.colors.png",colors)
